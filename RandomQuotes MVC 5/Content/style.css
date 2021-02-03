@@ -1,0 +1,100 @@
+﻿/*!
+    custom own Index.cshtml style 
+*/
+
+.hp {
+    width: 550px;
+    height: 950px;
+    background-image: url(../Img/hp.png);
+    margin-left: 300px;
+}
+
+.wrapper {
+    width: 400px;
+    height: 600px;
+    margin-left: 70px;
+    padding-top: 10px;
+}
+
+.logo {
+    width:450px;
+    height: 120px;
+    padding-left: 50px;
+    padding-top: 70px;
+}
+
+#btnGenerate {
+    margin-left: 190px;
+    margin-bottom: 10px;
+    font-size: 20px;
+    margin-top: 50px;
+}
+
+.scrollbar {
+    height: 600px;
+    width: 500px;
+    overflow: hidden;
+}
+
+.scrollbar:hover {
+     overflow-y: scroll;
+}
+
+#style-6::-webkit-scrollbar-track {
+    background-color: white;
+}
+
+#style-6::-webkit-scrollbar {
+    width: 10px;
+    background-color: white;
+}
+
+#style-6::-webkit-scrollbar-thumb {
+    background-color: orangered;
+    background-image: -webkit-linear-gradient( 45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent );
+}
+
+/*!
+    custom own Coba.cshtml style 
+*/
+
+.box {
+    margin-left: 100px;
+}
+
+/*!
+    custom own QuoteRequest.cshtml style 
+*/
+
+#btnRequest {
+    margin-left: 190px;
+    font-size: 20px;
+    margin-top: 50px;
+}
+
+.overlay {
+    position: fixed;
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.overlay:target {
+    visibility: visible;
+    opacity: 1;
+}
+
+.popup {
+    margin: 200px 0px 0px -100px;
+    padding: 20px;
+    background-color: lightslategrey;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    width: 580px;
+    height: 150px;
+    position: relative;
+    font-size: 20px;
+    transition: all 5s ease-in-out;
+    opacity: 0.9;
+}

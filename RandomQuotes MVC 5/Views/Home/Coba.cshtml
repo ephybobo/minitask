@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "Coba";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>This Page create only for trial</h2>
+
+<div class="box">
+@using (Html.BeginForm())
+{
+        <h4>Validate Form</h4>
+        <p>Input Number Range 1-100000</p>
+        <input id="number" name="number" type="text" />
+        <input id="btnSubmit" type="button" value="Submit" />
+        <div class="result"></div>
+}
+</div>
+
+<hr />
+
+<script src="~/Scripts/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {       
+        $("#btnSubmit").click(function () {
+            var number = $("#number").val();
+            $.ajax({
+                type: "GET",
+                url: "@(Url.Action("Submit"))",
+                dataType: "text",
+                contentType: "text/plain; charset=UTF-8",
+                data: { number: number },
+                success: function (data) {
+                    if (data == "valid")                        
+                        $('.result').html("<p style='color: blue'>Your input is accepted.</p>"); 
+                    else 
+                        $('.result').html("<p style='color: red'>Your input is not valid. Please enter another number</p>"); 
+
+                   console.log(data);
+                 },
+            });
+        }); 
+    });
+
+</script>

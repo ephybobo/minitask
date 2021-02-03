@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>RandomQuote</h2>
+
+<div class="hp">
+    <img class="logo" src="~/Img/logo.jpg" alt="Site Logo" />
+    <div class="scrollbar" id="style-6">
+        <div class="wrapper">
+        </div>
+    </div>
+    <button type="button" id="btnGenerate"><b>Generate Quotes</b></button>
+</div>
+
+<hr />
+
+<script src="~/Scripts/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {       
+        var indexQuotes = [];
+        var loading = false;
+
+        $("#btnGenerate").click(function () {
+            if (loading)
+                return;
+            loading = true;
+
+            $.ajax({
+                type: "GET",
+                url: "@(Url.Action("Generate"))",
+                data:  { indexQuotes: indexQuotes },
+                dataType: "json",
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                traditional: true,
+                success: function (data) {
+                    loading = false;
+
+                    if (data.message == "Not Found") {
+                        $(".wrapper").html(`
+                        <h4><b> This page can't load the quotes. </b></h4>`);
+                        loading = true;
+                    }
+                    else {
+                        indexQuotes.push(data.index);
+                        $(".wrapper").append(`
+                        <h4><b> Qoutes of the day: </b></h4>
+                        <h4 class="listQuotes">${data.quote}</h4>
+                        <h4 class="date"><i>Posted: ${data.date} </i></h4>
+                        <hr style="border: 1px solid gray">`);
+                        if (indexQuotes.length == data.sourceCount)
+                            indexQuotes.length = 0;
+                    }
+                },
+            });
+            console.log(indexQuotes);
+        });
+    });
+
+</script>

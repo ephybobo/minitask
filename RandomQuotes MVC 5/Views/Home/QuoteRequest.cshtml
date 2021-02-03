@@ -1,0 +1,97 @@
+﻿
+@{
+    ViewBag.Title = "QuoteRequest";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>QuoteRequest</h2>
+
+<div class="hp">
+    <img class="logo" src="~/Img/logo.jpg" alt="Site Logo" />
+    <div class="scrollbar" id="style-6">
+        <div class="wrapper">
+            <div id="popup1" class="overlay" style="display:none">
+                <div class="popup">
+                    @using (Html.BeginForm())
+                    {
+                        <p><b>Please input the request number of quotes</b></p>
+                        <input id="number" name="number" type="text" style="height:30px" />
+                        <br /><br />
+                        <input id="btnSubmit" type="button" value="Submit" style="font-size:20px" />
+                    }
+                </div>
+            </div>
+            <div class="quotes"></div>
+        </div>
+    </div>
+    <a href="#popup1"><button type="button" id="btnRequest"><b>Generate Quotes</b></button></a>
+</div>
+
+<hr />
+
+<script src="~/Scripts/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var resultQuotes = [];
+
+        $("#btnRequest").click(function () {
+            $("#popup1").show();
+            $('#number').val("");
+            $(this).prop("disabled", true);
+
+        });
+
+        $("#btnSubmit").click(function () {
+            var number = $("#number").val();
+            $.ajax({
+                type: "GET",
+                url: "@(Url.Action("Requested"))",
+                data: { number: number, resultQuotes: resultQuotes },
+                dataType: "json",
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                traditional: true,
+                success: function (data) {
+
+                    if (data.status == "error") {
+                        $(".quotes").html(`
+                        <h4><b> This page can't load the quotes. </b></h4>`);
+                    }
+                    else if (data.status == "duplicate")
+                        alert(`The quote index-${data.input} have been appeared, please insert the new number.`);
+                    else if (data.status == "semivalid")
+                        alert(`Out of range quotes only in index number between 1 - ${data.sourceCount}`);
+                    else if (data.status == "novalid")
+                        alert("Your input number not valid.");
+                    else {
+                        if (data.status == "reset") {
+                            var reset = window.confirm("All the quotes have been appeared, do you want to reset all?");
+                            if (reset) {
+                                $(".quotes").empty();
+                                resultQuotes.length = 0;
+                            }
+                        }
+                        resultQuotes.push(data.input);
+                        $(".quotes").append(`
+                            <h4><b> Qoutes of the day: </b></h4>
+                            <h4 class="listQuotes">${data.quote}</h4>
+                            <h4 class="date"><i>Posted: ${data.date} </i></h4>
+                            <hr style="border: 1px solid gray">`);
+                    }
+
+                    $("#popup1").hide();
+                    $("#btnRequest").prop("disabled", false);
+
+                    var $content = $(".scrollbar");
+                    $content[0].scrollTop = $content[0].scrollHeight;
+
+                    console.log(resultQuotes);
+ 
+                 },
+            });
+         });
+    });
+
+</script>
